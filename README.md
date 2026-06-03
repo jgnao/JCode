@@ -32,4 +32,4 @@ npm run tauri build
 
 ## Objetivo
 
-Este projeto foi criado para estudar desenvolvimento desktop com React e Tauri enquanto construo um editor de código funcional do zero.
+Este projeto foi criado para estudar desenvolvimento desktop com React e Tauri enquanto construo um editor de código funcional.

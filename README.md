@@ -6,10 +6,8 @@ JCode é um editor de código desktop desenvolvido com React, Tauri e CodeMirror
 
 - Explorador de arquivos
 - Sistema de abas
-- Destaque de sintaxe
 - Salvamento de arquivos
 - Interface moderna e leve
-- Suporte a múltiplas linguagens
 
 ## Tecnologias
 

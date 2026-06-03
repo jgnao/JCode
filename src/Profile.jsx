@@ -88,56 +88,6 @@ export default function Profile() {
         <main className="editor-container">
           <div className=" settings-page">
             <h2>Perfil</h2>
-
-            <section className="setting-group">
-              <h3>Aparência</h3>
-
-              <div className="setting-item">
-                <label>Tema</label>
-                <select>
-                  <option>Escuro</option>
-                  <option>Claro</option>
-                </select>
-              </div>
-
-              <div className="setting-item">
-                <label>Tamanho da Fonte</label>
-                <input type="number" min="10" max="40" defaultValue="14" />
-              </div>
-            </section>
-
-            <section className="setting-group">
-              <h3>Editor</h3>
-
-              <div className="setting-item">
-                <label>Word Wrap</label>
-                <input type="checkbox" />
-              </div>
-
-              <div className="setting-item">
-                <label>Mostrar Números de Linha</label>
-                <input type="checkbox" defaultChecked />
-              </div>
-
-              <div className="setting-item">
-                <label>Auto Save</label>
-                <input type="checkbox"/>
-              </div>
-            </section>
-
-            <section className="setting-group">
-              <h3>Arquivos</h3>
-
-              <div className="setting-item">
-                <label>Restaurar Sessão ao Abrir</label>
-                <input type="checkbox" defaultChecked />
-              </div>
-
-              <div className="setting-item">
-                <label>Confirmar Antes de Excluir</label>
-                <input type="checkbox" defaultChecked />
-              </div>
-            </section>
           </div>
         </main>
       </div>

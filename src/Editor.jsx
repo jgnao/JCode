@@ -11,6 +11,7 @@ import "./App.css";
 import FileTree from "./utils/fileTree";
 import CodeEditor from "./utils/codeEditor";
 import Menu from "./utils/menu";
+import SubMenu from "./utils/submenu";
 //Logo
 import logo from "./assets/teste.png";
 import logoExplorer from "./assets/128x128.png";
@@ -21,10 +22,13 @@ export default function Editor() {
   const [pastaAtual, setPastaAtual] = useState("");
   const [arquivos, setArquivos] = useState([]);
   const [arquivosAbertos, setArquivosAbertos] = useState([]);
+  const [siderbar, setSidebarActive] = useState(false);
   const [arquivoAtivo, setArquivoAtivo] = useState(null);
   const [conteudoCodigo, setConteudoCodigo] = useState("");
+  const [subMenu, setSubMenu] = useState("");
   const [folders, setFolders] = useState({});
   const [menuPos, setMenuPos] = useState({ x: 0, y: 0, active: false, arquivo: null });
+  const [submenuPos, setSubMenuPos] = useState({ x: 0, y: 0, active: false });
 
   const trocar_pagina = useNavigate();
   const appWindow = getCurrentWindow();
@@ -36,6 +40,10 @@ export default function Editor() {
   const pastaSelecionada = useMemo(() => {
     return pastaAtual ? pastaAtual.split("\\").pop() : "";
   }, [pastaAtual]);
+
+  const Fsidebar = () => {
+    setSidebarActive(!siderbar)
+  }
 
   const desativar_menu = () => {
     setMenuPos({
@@ -83,6 +91,36 @@ export default function Editor() {
     };
   }, []);
 
+  const abrir_submenu = (e) => {
+    setSubMenuPos({
+      x: e.clientX,
+      y: e.clientY,
+      active: true,
+    });
+  }
+  const desativar_submenu = (e) => {
+    setSubMenuPos({
+      x: 0,
+      y: 0,
+      active: false,
+    });
+  }
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (!submenuPos.active) return;
+      if (e.target.closest(".menu")) return;
+
+      desativar_submenu();
+    }
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, [submenuPos.active]);
+
+
   useEffect(() => {
     async function checkFolders() {
       const result = {};
@@ -110,7 +148,7 @@ export default function Editor() {
       console.error(err);
     }
   }
-  
+
   const testarSeEPasta = async (nomeArquivo) => {
     try {
       const caminhoCompleto = `${pastaAtual}/${nomeArquivo}`;
@@ -224,10 +262,21 @@ export default function Editor() {
         <div className="menu-items">
           <img src={logoExplorer} alt="" style={{ width: "30px" }} />
           <div className="jcode-title">JCode</div>
-          <div className="menu-item" onClick={salvarArquivo}>Salvar</div>
-          <div className="menu-item">Editar</div>
-          <div className="menu-item">Terminal</div>
-          <div className="menu-item">Ver</div>
+          <div className="menu-item" onClick={(e) => {
+            e.stopPropagation();
+            abrir_submenu(e)
+            setSubMenu("arquivo");
+          }}>Arquivo</div>
+          <div className="menu-item" onClick={(e) => {
+    e.stopPropagation();
+            abrir_submenu(e)
+            setSubMenu("editar");
+          }}>Editar</div>
+          <div className="menu-item" onClick={(e) => {
+    e.stopPropagation();
+            abrir_submenu(e)
+            setSubMenu("terminal");
+          }}>Terminal</div>
           <div className="menu-item">Ajuda</div>
         </div>
 
@@ -283,7 +332,7 @@ export default function Editor() {
           </div>
         </nav>
 
-        <aside className="sidebar">
+        <aside className={siderbar ? ("d-none") : "sidebar"}>
           <div className="sidebar-title">Explorador</div>
           <div className="sidebar-folder">{!pastaSelecionada ? "Nenhuma pasta selecionada" : pastaSelecionada}</div>
 
@@ -347,6 +396,11 @@ export default function Editor() {
         </main>
       </div>
 
+      {submenuPos.active && <SubMenu x={submenuPos.x} y={submenuPos.y} tipo={subMenu} funcoes={{
+        Fsidebar,
+        selecionarPasta,
+        salvarArquivo
+      }} />}
       {menuPos.active && pastaSelecionada && <Menu x={menuPos.x} y={menuPos.y} arquivo={menuPos.arquivo} pastaAtual={pastaAtual} atualizarPasta={atualizar} desativar={desativar_menu} />}
 
       <footer className="status-bar">

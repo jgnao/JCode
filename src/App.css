@@ -23,6 +23,10 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.d-none { 
+    display: none;
+}
+
 body {
     background:
         radial-gradient(circle at top,

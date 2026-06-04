@@ -2,6 +2,59 @@
 
 use std::fs;
 use rfd::FileDialog;
+use std::path::{Path, PathBuf};
+
+fn caminho_protegido(path: &Path) -> bool {
+    let protegidos = [
+        "C:\\Windows",
+        "C:\\Program Files",
+        "C:\\Program Files (x86)",
+        "C:\\Users\\Default",
+    ];
+
+    let canonico = match path.canonicalize() {
+        Ok(p) => p,
+        Err(_) => return true,
+    };
+
+    let caminho_str = canonico.to_string_lossy();
+
+    protegidos
+        .iter()
+        .any(|p| caminho_str.starts_with(p))
+}
+
+#[tauri::command]
+fn remove_file(path: String) -> Result<bool, String> {
+    let path = PathBuf::from(path);
+
+    if caminho_protegido(&path) {
+        return Err("Arquivo protegido".into());
+    }
+
+    if !path.exists() {
+        return Err("Arquivo não encontrado".into());
+    }
+
+    fs::remove_file(path).map_err(|e| e.to_string())?;
+    Ok(true)
+}
+
+#[tauri::command]
+fn remove_dir(path: String) -> Result<bool, String> {
+    let path = PathBuf::from(path);
+
+    if caminho_protegido(&path) {
+        return Err("Pasta protegida".into());
+    }
+
+    if !path.exists() {
+        return Err("Pasta não encontrada".into());
+    }
+
+    fs::remove_dir(path).map_err(|e| e.to_string())?;
+    Ok(true)
+}
 
 #[tauri::command]
 fn select_folder() -> Option<String> {
@@ -35,18 +88,6 @@ fn create_file(path: String) -> Result<bool, String> {
 #[tauri::command]
 fn create_dir(path: String) -> Result<bool, String> {
     fs::create_dir(path).map_err(|e| e.to_string())?;
-    Ok(true)
-}
-
-#[tauri::command]
-fn remove_file(path: String) -> Result<bool, String> {
-    fs::remove_file(path).map_err(|e| e.to_string())?;
-    Ok(true)
-}
-
-#[tauri::command]
-fn remove_dir(path: String) -> Result<bool, String> {
-    fs::remove_dir(path).map_err(|e| e.to_string())?;
     Ok(true)
 }
 

@@ -56,7 +56,7 @@ export default function Editor() {
 
   useEffect(() => {
     const handleContextMenu = (e) => {
-      e.preventDefault();
+      //e.preventDefault();
       const arquivo = e.target.closest(".file-tree") || e.target.className == "sidebar";
       console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       console.log(arquivo)
@@ -268,12 +268,12 @@ export default function Editor() {
             setSubMenu("arquivo");
           }}>Arquivo</div>
           <div className="menu-item" onClick={(e) => {
-    e.stopPropagation();
+            e.stopPropagation();
             abrir_submenu(e)
             setSubMenu("editar");
           }}>Editar</div>
           <div className="menu-item" onClick={(e) => {
-    e.stopPropagation();
+            e.stopPropagation();
             abrir_submenu(e)
             setSubMenu("terminal");
           }}>Terminal</div>
@@ -385,6 +385,12 @@ export default function Editor() {
           </div>
 
           <div className="code-area-wrapper">
+            {(!arquivoAtivo && <div className="oloco">
+              <img className="img" src={logo} width={"100px"} height={"100px"} alt=""/>
+              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
+              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
+              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
+              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2></div>)}
             {(arquivoAtivo && <CodeEditor
               key={arquivoAtivo}
               value={conteudoCodigo}

@@ -21,16 +21,23 @@ export default function Profile() {
   const trocar_pagina = useNavigate();
   const appWindow = getCurrentWindow();
 
+  const MenuItem = ({item}) => {
+    const Formatado = item.charAt(0).toUpperCase() + item.slice(1);
+    return (<div className="menu-item" onClick={(e) => {
+      e.stopPropagation();
+    }}>{Formatado}</div>)
+  }
+  
   return (
     <div className="app-container">
       <header className="navbar">
         <div className="menu-items">
           <img src={logoExplorer} alt="" style={{ width: "30px" }} />
           <div className="jcode-title">JCode</div>
-          <div className="menu-item">Editar</div>
-          <div className="menu-item">Terminal</div>
-          <div className="menu-item">Ver</div>
-          <div className="menu-item">Ajuda</div>
+          <MenuItem item={"arquivo"}/>
+          <MenuItem item={"editar"}/>
+          <MenuItem item={"terminal"}/>
+          <MenuItem item={"ajuda"}/>
         </div>
 
         <div className="app-title" id="appTitle">

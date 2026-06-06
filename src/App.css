@@ -26,7 +26,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: 0.1s;
 }
 
 .d-none { 
@@ -86,12 +85,19 @@ body {
     font-weight: bold;
 }
 
-/* Scrollbars Padronizadas */
+.cm-selectionMatch {
+    background: rgba(76, 0, 255, 0.2) !important;
+}
+
 .sidebar::-webkit-scrollbar,
 .code-input::-webkit-scrollbar,
 .cm-scroller::-webkit-scrollbar {
-    width: 6px;
+    width: 10px;
     height: 6px;
+}
+.cm-editor {
+    outline: none !important;
+    border: none !important;
 }
 
 .sidebar::-webkit-scrollbar-track,

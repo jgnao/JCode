@@ -56,7 +56,7 @@ export default function Editor() {
 
   useEffect(() => {
     const handleContextMenu = (e) => {
-      //e.preventDefault();
+      e.preventDefault();
       const arquivo = e.target.closest(".file-tree") || e.target.className == "sidebar";
       console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       console.log(arquivo)
@@ -255,6 +255,14 @@ export default function Editor() {
     }
   };
 
+  const MenuItem = ({item}) => {
+    const Formatado = item.charAt(0).toUpperCase() + item.slice(1);
+    return (<div className="menu-item" onClick={(e) => {
+      e.stopPropagation();
+      abrir_submenu(e)
+      setSubMenu(item);
+    }}>{Formatado}</div>)
+  }
 
   return (
     <div className="app-container">
@@ -262,22 +270,10 @@ export default function Editor() {
         <div className="menu-items">
           <img src={logoExplorer} alt="" style={{ width: "30px" }} />
           <div className="jcode-title">JCode</div>
-          <div className="menu-item" onClick={(e) => {
-            e.stopPropagation();
-            abrir_submenu(e)
-            setSubMenu("arquivo");
-          }}>Arquivo</div>
-          <div className="menu-item" onClick={(e) => {
-            e.stopPropagation();
-            abrir_submenu(e)
-            setSubMenu("editar");
-          }}>Editar</div>
-          <div className="menu-item" onClick={(e) => {
-            e.stopPropagation();
-            abrir_submenu(e)
-            setSubMenu("terminal");
-          }}>Terminal</div>
-          <div className="menu-item">Ajuda</div>
+          <MenuItem item={"arquivo"}/>
+          <MenuItem item={"editar"}/>
+          <MenuItem item={"terminal"}/>
+          <MenuItem item={"ajuda"}/>
         </div>
 
         <div className="app-title" id="appTitle">
@@ -386,7 +382,7 @@ export default function Editor() {
 
           <div className="code-area-wrapper">
             {(!arquivoAtivo && <div className="oloco">
-              <img className="img" src={logo} width={"100px"} height={"100px"} alt=""/>
+              <img className="img" src={logo} width={"100px"} height={"100px"} alt="" />
               <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
               <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
               <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>

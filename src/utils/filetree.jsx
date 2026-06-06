@@ -8,7 +8,7 @@ const FileIcon = ({ ext, isFolder, name }) => {
 
   if (isFolder) {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: `${spacing * 10}px`, width: "16px", height: "16px" }} fill="#a0a0aa" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ marginLeft: `${spacing * 10}px`, width: "16px", height: "16px" }} fill="#0c0a1a" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v1H3V7z" />
         <path d="M3 9h18v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z" />
       </svg>
@@ -22,7 +22,7 @@ const FileIcon = ({ ext, isFolder, name }) => {
     php: "#9200f3",
     json: "#e5ff54",
     cpp: "#375fff",
-    default: "#a0a0aa",
+    default: "#a8a0aa",
   };
 
   const fill = colors[ext] || colors.default;

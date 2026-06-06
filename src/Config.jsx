@@ -8,6 +8,7 @@ import { shortcuts } from "./essentials/keyboardcuts"
 //CSS
 import "./App.css";
 // File-Tree
+import { WindowControls, MenuItens } from "./utils/components";
 import FileTree from "./utils/fileTree";
 import CodeEditor from "./utils/codeEditor";
 import Menu from "./utils/menu";
@@ -19,6 +20,7 @@ import { event } from "@tauri-apps/api";
 
 export default function Config() {
   const [autosave_config, setAutosave] = useState(false)
+  const [save_left_config, setSaveLeft] = useState(false)
 
   const trocar_pagina = useNavigate();
   const appWindow = getCurrentWindow();
@@ -33,8 +35,17 @@ export default function Config() {
     setAutosave(false)
   })
 
-  
-  const MenuItem = ({item}) => {
+  useEffect(() => {
+    let valor = localStorage.getItem("save_left")
+
+    if (valor == "true") {
+      setSaveLeft(true)
+      return
+    }
+    setSaveLeft(false)
+  })
+
+  const MenuItem = ({ item }) => {
     const Formatado = item.charAt(0).toUpperCase() + item.slice(1);
     return (<div className="menu-item" onClick={(e) => {
       e.stopPropagation();
@@ -44,24 +55,13 @@ export default function Config() {
   return (
     <div className="app-container">
       <header className="navbar">
-        <div className="menu-items">
-          <img src={logoExplorer} alt="" style={{ width: "30px" }} />
-          <div className="jcode-title">JCode</div>
-          <MenuItem item={"arquivo"}/>
-          <MenuItem item={"editar"}/>
-          <MenuItem item={"terminal"}/>
-          <MenuItem item={"ajuda"}/>
-        </div>
+        <MenuItens MenuItem={MenuItem}/>
 
         <div className="app-title" id="appTitle">
           Configurações - JCode
         </div>
 
-        <div className="window-controls">
-          <span className="control-dot dot-minimize" onClick={() => appWindow.minimize()}></span>
-          <span className="control-dot dot-maximize" onClick={() => appWindow.toggleMaximize()}></span>
-          <span className="control-dot dot-close" onClick={() => appWindow.close()}></span>
-        </div>
+        <WindowControls />
       </header>
 
       <div className="main-body">
@@ -121,7 +121,9 @@ export default function Config() {
 
               <div className="setting-item">
                 <label>Tamanho da Fonte</label>
-                <input type="number" min="10" max="40" defaultValue="14" />
+                <input type="number" min="10" max="40" defaultValue={localStorage.getItem("font-size") ? localStorage.getItem("font-size"): "14"} onInput={(e) => {
+                    localStorage.setItem("font-size", e.target.value);}
+                    }/>
               </div>
             </section>
 
@@ -150,7 +152,13 @@ export default function Config() {
 
               <div className="setting-item">
                 <label>Restaurar Sessão ao Abrir</label>
-                <input type="checkbox" defaultChecked />
+                <input type="checkbox" checked={save_left_config}
+                  onChange={(e) => {
+                    const ativo = e.target.checked;
+
+                    setSaveLeft(ativo);
+                    localStorage.setItem("save_left", ativo);
+                  }} />
               </div>
 
               <div className="setting-item">

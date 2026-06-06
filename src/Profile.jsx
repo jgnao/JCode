@@ -8,6 +8,7 @@ import { shortcuts } from "./essentials/keyboardcuts"
 //CSS
 import "./App.css";
 // File-Tree
+import { WindowControls, MenuItens } from "./utils/components";
 import FileTree from "./utils/fileTree";
 import CodeEditor from "./utils/codeEditor";
 import Menu from "./utils/menu";
@@ -31,25 +32,15 @@ export default function Profile() {
   return (
     <div className="app-container">
       <header className="navbar">
-        <div className="menu-items">
-          <img src={logoExplorer} alt="" style={{ width: "30px" }} />
-          <div className="jcode-title">JCode</div>
-          <MenuItem item={"arquivo"}/>
-          <MenuItem item={"editar"}/>
-          <MenuItem item={"terminal"}/>
-          <MenuItem item={"ajuda"}/>
-        </div>
+
+        <MenuItens MenuItem={MenuItem}/>
 
         <div className="app-title" id="appTitle">
           Perfil - JCode
         </div>
 
-        <div className="window-controls">
-          <span className="control-dot dot-minimize" onClick={() => appWindow.minimize()}></span>
-          <span className="control-dot dot-maximize" onClick={() => appWindow.toggleMaximize()}></span>
-          <span className="control-dot dot-close" onClick={() => appWindow.close()}></span>
-        </div>
-      </header>
+        <WindowControls/>
+        </header>
 
       <div className="main-body">
         <nav className="activity-bar">

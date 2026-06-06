@@ -25,18 +25,24 @@ export default function SubMenu({ x, y, tipo, funcoes }) {
         ],
         editar: [
             {
-                nome: "Selecionar Arquivo",
-                acao: funcoes.setSidebarActive
+                nome: "Teste",
+                acao: funcoes.abrirGitHub
             },
             {
-                nome: "Desativar Explorador",
-                acao: funcoes.setSidebarActive
+                nome: "Teste 2",
+                acao: funcoes.abrirGitHub
             }
         ],
         terminal: [
             {
-                nome: "Novo Terminal",
-                acao: funcoes.setSidebarActive
+                nome: "Teste 3",
+                acao: funcoes.abrirGitHub
+            }
+        ],
+        gitHub: [
+            {
+                nome: "Abrir GitHub",
+                acao: funcoes.abrirGitHub
             }
         ],
     };

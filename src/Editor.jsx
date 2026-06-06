@@ -8,6 +8,7 @@ import { shortcuts } from "./essentials/keyboardcuts"
 //CSS
 import "./App.css";
 // File-Tree
+import { WindowControls, MenuItens } from "./utils/components";
 import FileTree from "./utils/fileTree";
 import CodeEditor from "./utils/codeEditor";
 import Menu from "./utils/menu";
@@ -56,7 +57,7 @@ export default function Editor() {
 
   useEffect(() => {
     const handleContextMenu = (e) => {
-      e.preventDefault();
+      //e.preventDefault();
       const arquivo = e.target.closest(".file-tree") || e.target.className == "sidebar";
       console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
       console.log(arquivo)
@@ -120,6 +121,25 @@ export default function Editor() {
     };
   }, [submenuPos.active]);
 
+  useEffect(() => {
+    async function SelectFolder(pasta) {
+      setPastaAtual(pasta);
+      const lista = await invoke("list_files", { path: pasta });
+      setArquivos(lista);
+      setArquivoAtivo(null);
+      setArquivosAbertos([]);
+      setConteudoCodigo("");
+    }
+    const is_active = localStorage.getItem("save_left")
+  
+    if (is_active == "true") {
+      const pasta = localStorage.getItem("folder")
+
+      if (pasta) {
+        SelectFolder(pasta)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     async function checkFolders() {
@@ -158,6 +178,16 @@ export default function Editor() {
     }
   };
 
+  const abrirGitHub = async () => {
+    try {
+      await invoke("open_file", {
+        path: `https://github.com/jgnao/JCode`
+      });
+    } catch (err) {
+      return false;
+    }
+  };
+
   const testar = async (nomeArquivo) => {
     if (!nomeArquivo) return;
     try {
@@ -182,6 +212,7 @@ export default function Editor() {
     try {
       const pasta = await invoke("select_folder");
       if (pasta) {
+        localStorage.setItem("folder", pasta)
         setPastaAtual(pasta);
         const lista = await invoke("list_files", { path: pasta });
         setArquivos(lista);
@@ -255,7 +286,7 @@ export default function Editor() {
     }
   };
 
-  const MenuItem = ({item}) => {
+  const MenuItem = ({ item }) => {
     const Formatado = item.charAt(0).toUpperCase() + item.slice(1);
     return (<div className="menu-item" onClick={(e) => {
       e.stopPropagation();
@@ -267,24 +298,13 @@ export default function Editor() {
   return (
     <div className="app-container">
       <header className="navbar">
-        <div className="menu-items">
-          <img src={logoExplorer} alt="" style={{ width: "30px" }} />
-          <div className="jcode-title">JCode</div>
-          <MenuItem item={"arquivo"}/>
-          <MenuItem item={"editar"}/>
-          <MenuItem item={"terminal"}/>
-          <MenuItem item={"ajuda"}/>
-        </div>
+        <MenuItens MenuItem={MenuItem} />
 
         <div className="app-title" id="appTitle">
           {arquivoAtivo ? `${arquivoAtivo.split("/").pop()} — JCode` : "JCode"}
         </div>
 
-        <div className="window-controls">
-          <span className="control-dot dot-minimize" onClick={() => appWindow.minimize()}></span>
-          <span className="control-dot dot-maximize" onClick={() => appWindow.toggleMaximize()}></span>
-          <span className="control-dot dot-close" onClick={() => appWindow.close()}></span>
-        </div>
+        <WindowControls />
       </header>
 
       <div className="main-body">
@@ -381,12 +401,6 @@ export default function Editor() {
           </div>
 
           <div className="code-area-wrapper">
-            {(!arquivoAtivo && <div className="oloco">
-              <img className="img" src={logo} width={"100px"} height={"100px"} alt="" />
-              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
-              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
-              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2>
-              <h2 className="oloco2" style={{ textAlign: "center", color: "#b3b3b3", fontWeight: 400 }}>Ainda não há uma pasta aberta</h2></div>)}
             {(arquivoAtivo && <CodeEditor
               key={arquivoAtivo}
               value={conteudoCodigo}
@@ -401,7 +415,8 @@ export default function Editor() {
       {submenuPos.active && <SubMenu x={submenuPos.x} y={submenuPos.y} tipo={subMenu} funcoes={{
         Fsidebar,
         selecionarPasta,
-        salvarArquivo
+        salvarArquivo,
+        abrirGitHub
       }} />}
       {menuPos.active && pastaSelecionada && <Menu x={menuPos.x} y={menuPos.y} arquivo={menuPos.arquivo} pastaAtual={pastaAtual} atualizarPasta={atualizar} desativar={desativar_menu} />}
 

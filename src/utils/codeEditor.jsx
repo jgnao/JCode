@@ -136,12 +136,19 @@ export default function CodeEditor({ value, onChange, arquivo, ext, salvar }) {
       }
     }
 
+    const lettersize = EditorView.theme(
+      {
+        ".cm-line": {fontSize: localStorage.getItem("font-size") ? localStorage.getItem("font-size") +"px" : "14px"}
+      }
+    )
+
     const state = EditorState.create({
       doc: value || "",
       extensions: [
         basicSetup,
         getLanguage(ext),
         syntaxHighlighting(jcodeHighlight),
+        lettersize,
 
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
